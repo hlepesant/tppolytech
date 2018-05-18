@@ -6,8 +6,8 @@ ENV RELEASE_DATE 2016-05-07
 ENV DEBIAN_FRONTEND noninteractive
 ENV APACHE_HTTPD "exec /usr/sbin/apache2"
 
-RUN apt-get -qq update && \
-  apt-get -qq -y install apache2 php5 libapache2-mod-php5 php5-mysql php5-json php5-curl php5-gd php5-cli && \
+RUN apt-get update && \
+  apt-get -y install apache2 php5 libapache2-mod-php5 php5-mysql php5-json php5-curl php5-gd php5-cli && \
   apt-get clean
 
 VOLUME /var/www/html/
