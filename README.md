@@ -10,6 +10,19 @@ Objectif : Stack Apache/PHP5/MySQL
 
 Dans 2 containers
 
+#### WARNING :
+
+Il faut modifier le fichier /etc/default/docker car dockerd ne fonctionne pas avec dnsmasq sous Ubuntu.
+
+```
+vim /etc/default/docker
+...
+#DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4"
+DOCKER_OPTS="--dns 192.168.238.2"
+...
+sudo service docker restart
+```
+
 #### Opérations :
 
 1. git clone https://github.com/hlepesant/tppolytech.git
