@@ -19,7 +19,36 @@ vim /etc/default/docker
 ...
 #DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4"
 DOCKER_OPTS="--dns 192.168.238.2"
-...
+```
+
+Et pour les distributions avec systemd
+```diff
+--- /lib/systemd/system/docker.service	2018-04-26 09:15:24.000000000 +0200
++++ /lib/systemd/system/docker.service	2018-05-18 16:01:09.480000000 +0200
+@@ -10,7 +10,7 @@
+ # the default is not to use systemd for cgroups because the delegate issues still
+ # exists and systemd currently does not support the cgroup feature set required
+ # for containers run by docker
+-ExecStart=/usr/bin/dockerd -H fd://
++ExecStart=/usr/bin/dockerd -H fd:// --dns 192.168.238.2
+ ExecReload=/bin/kill -s HUP $MAINPID
+ LimitNOFILE=1048576
+ # Having non-zero Limit*s causes performance problems due to accounting overhead
+```
+avec une prise en compte des modifications :
+```
+sudo systemctl daemon-reload
+```
+ 
+Ou encore dans le fichier /etc/docker/daemon.json
+```json
+{
+   "dns":["192.168.238.2"]
+}
+```
+
+Dans tous les cas :
+```
 sudo service docker restart
 ```
 
