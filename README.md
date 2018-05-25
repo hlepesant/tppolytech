@@ -1,6 +1,6 @@
 # Polytech ASR DI4
 
-## Cours Masgistraux
+## Cours Magistraux
 
 [par ici](cm/)
 
