@@ -7,8 +7,8 @@
 
 ## Présentation Docker
 
-[la video](https://www.youtube.com/watch?v=xJuRS6QYAAk)
-[les slides](https://www.slideshare.net/LudovicPiot/workshop-4-docker-des-tours-dans-le-petit-bassin)
+* [la video](https://www.youtube.com/watch?v=xJuRS6QYAAk)
+* [les slides](https://www.slideshare.net/LudovicPiot/workshop-4-docker-des-tours-dans-le-petit-bassin)
 
 ## TP Polytech Tours DI-4
 
