@@ -2,8 +2,8 @@
 
 ## Cours Magistraux
 
- - [Virtualisation](CM/Polytech_CM_Virtualisation.pdf)
- - [Docker](CM/Polytech_Docker.pdf)
+ - [Virtualisation](https://hugues.lepesant.com/stuff/polytech/Polytech_CM_Virtualisation.pdf)
+ - [Docker](https://hugues.lepesant.com/stuff/polytech/Polytech_Docker.pdf)
 
 
 ## TP Polytech Tours DI-4
