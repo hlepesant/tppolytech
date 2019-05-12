@@ -11,6 +11,3 @@ sudo sh -c 'echo "127.0.0.1     wp.polytech.io" >> /etc/hosts'
 ```
 
 Then browse [http://wp.polytech.io:8080/](http://wp.polytech.io:8080/)
-
-
-
