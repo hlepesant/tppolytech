@@ -1,16 +1,13 @@
-# Polytech ASR DI4
+# Wordpress in docker
 
-## Cours Magistraux
+## Solution
 
- - [Virtualisation](https://hugues.lepesant.com/stuff/polytech/Polytech_CM_Virtualisation.pdf)
- - [Docker](https://hugues.lepesant.com/stuff/polytech/Polytech_Docker.pdf)
+```bash
+git clone https://github.com/hlepesant/tppolytech.git
+git checkout 2019
+sh ./getwp.sh
+docker-compose up -d
+sudo sh -c 'echo "127.0.0.1     wp.polytech.io" >> /etc/hosts'
+```
 
-
-## TP Polytech Tours DI-4
-
-To switch to TP1
-
-1. sudo apt-get -y install git
-1. git clone https://github.com/hlepesant/tppolytech.git
-1. cd tppolytech
-1. git checkout TP1
+Then browse [http://wp.polytech.io:8080/](http://wp.polytech.io:8080/)
