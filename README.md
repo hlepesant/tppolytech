@@ -4,7 +4,6 @@
 
 ```bash
 git clone https://github.com/hlepesant/tppolytech.git
-git checkout 2019
 sh ./getwp.sh
 docker-compose up -d
 sudo sh -c 'echo "127.0.0.1     wp.polytech.io" >> /etc/hosts'
