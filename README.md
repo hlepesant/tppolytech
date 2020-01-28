@@ -1,6 +1,18 @@
-# Wordpress in docker
+# Polytech Tours
 
-## Solution
+## Objectif
+
+ - Création d'une stack Wordpress dans des containers Docker
+
+## Rappels
+
+Les prérequis pour faire fonctionner l'application web [Wordpress](https://wordpress.org/) sont les suivantes :
+ - Un serveur Web (Aapche2, Nginx)
+ - PHP (7.x)
+ - Un serveur de base de données (MySQL)
+
+ 
+
 
 ```bash
 git clone https://github.com/hlepesant/tppolytech.git
