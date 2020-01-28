@@ -24,3 +24,7 @@ ______________      |   _____________     __________       __________   |
                     |                                                   |
                     |_______________________Docker______________________|
 ```
+
+* Le navigateur web se connecte sur le port 80 (http) d'une IP.  
+* Le serveur Nginx demande à PHP-FPM d'interpréter les fichiers PHP.  
+* Lors de cette interprétation PHP-FPM va aller chercher des données dans la base de données MySQL.  
