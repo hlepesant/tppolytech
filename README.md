@@ -23,15 +23,6 @@ ______________       |   _____________       __________        __________   |
                      |____________________Docker____________________________|
 ```
 
-```mermaid
-stateDiagram
-    [*] --> First
-    state First {
-        [*] --> second
-        second --> [*]
-    }
-```
-
 
 * Le navigateur web se connecte sur le port 80 (http) d'une IP.  
 * Le serveur Nginx demande à PHP-FPM d'interpréter les fichiers PHP.  
@@ -55,5 +46,11 @@ Dans le Dockerfile nous installerons les paquets PHP de Debian. Les paquets sont
  - php7.3-xml
 
  Tous ça dans un fichier docker-compose.yml.
+
+## Elements fournis
+
+* Nginx : Le fichier de configuration à monter dans votre container dans /etc/nginx/conf.d/
+* Le script getwp.sh qui télécharge la dernière version de Wordpress et la décompresse en local. Le répertoire devra être monté dans les containers Nginx et PHP-FPM dans le répertoire /var/www/html/
+
 
  Bonne chance.
