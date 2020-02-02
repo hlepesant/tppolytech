@@ -4,16 +4,20 @@ volumes:
     dbdata:
 
 services:
-
+      
     mysql:
         image: mysql:8.0.19
         volumes:
             - dbdata:/var/lib/mysql
         environment:
+            TZ: Europe/Paris
             MYSQL_ROOT_PASSWORD: password
             MYSQL_DATABASE: wordpress
             MYSQL_USER: wordpress
             MYSQL_PASSWORD: password
+        labels:
+            traefik.enable: "false"
+
     phpfpm:
         build:
             context: ./phpfpm
@@ -26,13 +30,34 @@ services:
             MYSQL_HOST: mysql
         links:
             - mysql
+        labels:
+            traefik.enable: "false"
 
     web:
         image: nginx:mainline
         volumes:
             - ./nginx/config/conf.d:/etc/nginx/conf.d
             - ./wordpress:/usr/share/nginx/html
-        ports:
-            - "8080:80"
         links:
             - phpfpm
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.web.rule=Host(`wp.polytech.io`)"
+            - "traefik.http.routers.web.entrypoints=web"
+
+    traefik:
+        image: "traefik:v2.1.3"
+        container_name: "traefik"
+        command:
+            - "--log.level=DEBUG"
+            - "--api.insecure=true"
+            - "--providers.docker=true"
+            - "--providers.docker.exposedbydefault=false"
+            - "--entrypoints.web.address=:80"
+        ports:
+            - "80:80"
+            - "8080:8080"
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+        labels:
+            traefik.enable: "false"
