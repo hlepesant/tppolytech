@@ -32,20 +32,49 @@ ______________       |   _____________       __________        __________   |
 
 Utiliser [docker-compose](https://docs.docker.com/compose/) pour lancer tous les containers en même temps.
 
-Pour Nginx et MySQL utiliser des images officiels :
- - [MysqL](https://hub.docker.com/_/mysql)
- - [Nginx](https://hub.docker.com/_/nginx)
+Ecrire un fichier [docker-compose.yml](https://docs.docker.com/compose/compose-file/) dans le quel seront déclarés 3 "services" :
 
-Pour PHP-FPM, nous allons utiliser un Dockerfile qui fabriquera une image à partir de [debian](https://hub.docker.com/_/debian):buster-slim.  
-Dans le Dockerfile nous installerons les paquets PHP de Debian. Les paquets sont les suivants :
+ * Un container mysql
+ * Un container php-fpm
+ * Un container nginx
+
+
+### Container Nginx
+
+Utilisez une [image officielle](https://hub.docker.com/_/nginx) pour démarrer le container.  
+Le port 80 du container sera exposé et accessible par le port 8080.  
+Le container nginx sera "linké" au container php-fpm.
+
+### Container MySQL
+
+Uitiliser une [image officielle](https://hub.docker.com/_/mysql).   
+Créer un volume persistent qui sera attaché au container.  
+Ainsi les données ajoutées dans votre base de données ne seront pas perdues à chauqe re-démarrage de votre container MySQL
+
+
+### Container PHP-FPM
+
+Cette fois-ci nous allons créer notre image Docker avec un Dockerfile.  
+En se basant sur une [image Debian officielle](https://hub.docker.com/_/debian) créer une image Docker permettant de lancer le service PHP-FPM.  
+Avec notre Dockerfile nous installerons des paquets PHP de Debian.  
+Les paquets sont les suivants :
  - php7.3-fpm
  - php7.3-mysql
  - php7.3-gd
+ - php7.3-imagick
  - php7.3-intl
  - php7.3-mbstring
  - php7.3-xml
+ - php7.3-curl
+ - php7.3-apcu
+Le container sera "linké" avec le container MySQL.
 
- Tous ça dans un fichier docker-compose.yml.
+
+## Wordpress
+
+La dernière version de [Wordpress](https://fr.wordpress.org/download/) sera décompressée dans un répertoire local.  
+Le répertoire sera monté sous forme de "volume" dans les containers Nginx et PHP-FPM.
+
 
 ## Elements fournis
 
