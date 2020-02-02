@@ -26,3 +26,13 @@ services:
             MYSQL_HOST: mysql
         links:
             - mysql
+
+    web:
+        image: nginx:mainline
+        volumes:
+            - ./nginx/config/conf.d:/etc/nginx/conf.d
+            - ./wordpress:/usr/share/nginx/html
+        ports:
+            - "8080:80"
+        links:
+            - phpfpm

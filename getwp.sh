@@ -29,7 +29,7 @@ require_once( ABSPATH . 'wp-settings.php');
 EOF
 
 chmod 0644 wordpress/wp-config.php
-sudo mkdir wordpress/wp-content/{plugins,themes,upgrade,uploads}
+mkdir wordpress/wp-content/{plugins,themes,upgrade,uploads}
 sudo chown -R 33:33 wordpress/wp-content
 
 rm -f wordpress.tar.gz
