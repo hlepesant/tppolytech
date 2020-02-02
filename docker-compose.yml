@@ -14,3 +14,15 @@ services:
             MYSQL_DATABASE: wordpress
             MYSQL_USER: wordpress
             MYSQL_PASSWORD: password
+    phpfpm:
+        build:
+            context: ./phpfpm
+        volumes:
+            - ./wordpress:/usr/share/nginx/html
+        environment:
+            MYSQL_DATABASE: wordpress
+            MYSQL_USER: wordpress
+            MYSQL_PASSWORD: password
+            MYSQL_HOST: mysql
+        links:
+            - mysql
