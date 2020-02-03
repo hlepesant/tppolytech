@@ -1,6 +1,6 @@
 # TP Docker : Episode 2
 
-# Création d'une stack Wordpress dans des containers Docker
+# Création d'une stack Wordpress dans des containers Docker avec Haute Disponibilité
 
 ## Rappels
 
@@ -9,40 +9,45 @@ Les prérequis pour faire fonctionner l'application web [Wordpress](https://word
  - PHP (7.x)
  - Un serveur de base de données (MySQL)
 
+
 ## Fonctionnement
 
 ```
 
-                     ________________________________________________________
-______________       |   _____________       __________        __________   |
-|            |       |   |           |       |         |       |         |  |  
-| Navigateur |  <->  |   |   Nginx   |  <->  |   PHP   |  <->  |  MySQL  |  |
-|    Web     |       |   |           |       |   FPM   |       |         |  |
-|____________|       |   |___________|       |_________|       |_________|  |
-                     |                                                      |
-                     |____________________Docker____________________________|
+                     __________________________________________________________________________
+______________       |   _____________     _____________       __________        __________   |
+|            |       |   |           |     |           |       |         |       |         |  |  
+| Navigateur |  <->  |   | Traefik   | <-> |   Nginx   |  <->  |   PHP   |  <->  |  MySQL  |  |
+|    Web     |       |   |           |     |           |       |   FPM   |       |         |  |
+|____________|       |   |___________|     |___________|       |_________|       |_________|  |
+                     |                                                                        |
+                     |_________________________________Docker_________________________________|
 ```
 
 
-* Le navigateur web se connecte sur le port 80 (http) d'une IP.  
-* Le serveur Nginx demande à PHP-FPM d'interpréter les fichiers PHP.  
+* Le navigateur web se connecte sur le port 8000 (http) d'une IP.  
+* Le load-balancer réparti le traffic vers une ferme de Nginx 
+* Les serveurs Nginx demandent à PHP-FPM d'interpréter les fichiers PHP.  
 * Lors de cette interprétation PHP-FPM va aller chercher des données dans la base de données MySQL.  
 
 ## Objectif
 
-Utiliser [docker-compose](https://docs.docker.com/compose/) pour lancer tous les containers en même temps.
+Ecrire un fichier [docker-compose.yml](https://docs.docker.com/compose/compose-file/) dans le quel seront déclarés 4 "services" :
 
-Ecrire un fichier [docker-compose.yml](https://docs.docker.com/compose/compose-file/) dans le quel seront déclarés 3 "services" :
-
- * Un container mysql
- * Un container php-fpm
+ * Un container traefik
  * Un container nginx
+ * Un container php-fpm
+ * Un container mysql
+
+### Container Traefik
+
+Utilisez une [image officielle](https://hub.docker.com/_/traefik) pour démarrer le container.  
+Le port 80 du container sera exposé et accessible par le port 8000.  
 
 
 ### Container Nginx
 
 Utilisez une [image officielle](https://hub.docker.com/_/nginx) pour démarrer le container.  
-Le port 80 du container sera exposé et accessible par le port 8080.  
 Le container nginx sera "linké" au container php-fpm.
 
 ### Container MySQL
@@ -79,7 +84,27 @@ Le répertoire sera monté sous forme de "volume" dans les containers Nginx et P
 ## Elements fournis
 
 * Nginx : Le fichier de configuration à monter dans votre container dans /etc/nginx/conf.d/
+* PHP-FPM : Les fichiers de configuration à copier dans l'image que vous allez builder. Ils sont dans "phpfpm/config"
 * Le script getwp.sh qui télécharge la dernière version de Wordpress et la décompresse en local. Le répertoire devra être monté dans les containers Nginx et PHP-FPM dans le répertoire /var/www/html/
 
 
- Bonne chance.
+
+# Scaling Up and Down
+
+## Scale Up
+```
+docker-compose up -d
+docker-compose up --scale web=2 -d
+```
+
+## Scale Down
+```
+docker-compose up --scale web=1 -d
+```
+
+# Cleaning
+```
+docker-compose stop
+docker-compose rm
+docker volume rm tppolytech_dbdata
+```
