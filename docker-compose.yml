@@ -6,7 +6,8 @@ volumes:
 services:
 
     mysql:
-        image: mysql:8.0.19
+        image: mysql:8.0
+        command: --default-authentication-plugin=mysql_native_password
         volumes:
             - dbdata:/var/lib/mysql
         environment:
@@ -33,6 +34,6 @@ services:
             - ./nginx/config/conf.d:/etc/nginx/conf.d
             - ./wordpress:/usr/share/nginx/html
         ports:
-            - "8080:80"
+            - "8000:80"
         links:
             - phpfpm
