@@ -17,9 +17,6 @@ curl -fsSL http://api.wordpress.org/secret-key/1.1/salt >> wordpress/wp-config.p
 
 cat <<'EOF' >> wordpress/wp-config.php
 
-define('WP_REDIS_HOST', getenv('REDIS_HOST') );
-define('WP_REDIS_PORT', getenv('REDIS_PORT') );
-
 $table_prefix  = 'wp_';
 define( 'WP_DEBUG', false );
 if ( !defined('ABSPATH' ) )
