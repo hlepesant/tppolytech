@@ -152,7 +152,7 @@ contourner le nouveau plugin d'authentification de MySQL 8, et revenir au
 plugin natif ?
 
 <details><summary>Solution</summary>
-</p>
+<p>
 
 Pour la partie base de données il faut définir de$s variables d'environnement.  
 Et pour utiliser le bon plugin, il faut utiliser le pramètre `command`.
