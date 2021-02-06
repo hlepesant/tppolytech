@@ -133,7 +133,8 @@ services:
 
 Maintenant lancer la commande :
 ```shell
-docker-compose up
+docker-compose up -d
+docker-compose logs -f 
 ```
 
 Qu'observez-vous ?
@@ -162,8 +163,6 @@ Cela donne ceci :
 services:
     bdd:
         image: mysql:8.0
-        volumes:
-            - bdd_data:/var/lib/mysql
         command: --default-authentication-plugin=mysql_native_password
         environment:
             MYSQL_ROOT_PASSWORD: password
@@ -172,6 +171,61 @@ services:
             MYSQL_PASSWORD: password
 ```
 </p>
+
+Maintenant lancer la commande :
+```shell
+docker-compose up -d
+docker-compose logs -f 
+```
+
+Qu'observez-vous ?
+Le container MySQL est-il toujours actif ?
+
+Dans une autre console, lancer la commande suivante :
+
+```shell
+docker-compose exec -- bdd bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
+```
+
+Que s'est il passé ?
+Comparer les commandes :
+
+```shell
+docker-compose exec -- bdd bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
+```
+et 
+```shell
+docker exec -ti <CONTAINER_ID> bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
+```
+
+en remplaçant '<CONTAINER_ID>' par l'ID du container de la commande `docker ps`.  
+
+
+
+Vous  êtes connecté à la base de données.
+Nous allons afficher les bases de données existantes :
+
+```shell
+mysql> show databases;
+```
+
+Voyez-vous la base de données `wordpress` ?
+
+Créer la base de donnée `polytech` :
+```shell
+mysql> create database polytech;
+mysql> show databases;
+```
+
+Trouvez-vous la base de données `polytech` ?
+
+Revenez sur la console précédente, et taper "Ctrl+C".
+Lancer la commande : 
+
+```shell
+docker-compose start
+docker-compose exec -- bdd bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
+```
 
 
 <details><summary>Solution</summary>
