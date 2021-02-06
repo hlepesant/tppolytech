@@ -12,7 +12,6 @@ L'application web [Wordpress](https://wordpress.org/) nécessite :
 Pendant cet atelier nous allons donc de démarrer une stack applicative complète à l'aide de containers.  
 
 ```
-
                      ________________________________________________________
 ______________       |   _____________       __________        __________   |
 |            |       |   |           |       |         |       |         |  |  
@@ -75,7 +74,7 @@ allons faire simple en n'utilisant que :
 
 ### 1.1  Version
 
-Ajouter les lignes suivantes à votre fihcier docker-compose.yml.
+Ajouter les lignes suivantes à votre fichier docker-compose.yml.
 ```yaml
 version: '3.8'
 ```
@@ -130,6 +129,39 @@ Modifier le fihcier docker-compoe.yml et débuter la section Service :
 services:
     bdd:
         image: mysql:8.0
+```
+
+Maintenant lancer la commande :
+```shell
+docker-compose up
+```
+
+Qu'observez-vous ?
+Le container MySQL est-il toujours actif ?
+
+Rechercher dans la [documentation de l'image MySQL](https://hub.docker.com/_/mysql) 
+comment faire pour :
+
+ * Définir un mot de passe pour l'utilisateur "root" de MySQL ?
+ * Définir un username, et son mot de passe, autre que "root" ?
+ * Créer automatiquement une base de données "wordpress" ?
+
+Toujours dans cette [page](https://hub.docker.com/_/mysql), trouvez comment 
+contourner le nouveau plugin d'authentification de MySQL 8, et revenir au 
+plugin natif ?
+
+<details><summary>Solution</summary>
+</p>
+
+Pour la partie base de données il faut définir de$s variables d'environnement.  
+Et pour utiliser le bon plugin, il faut utiliser le pramètre `command`.
+
+Cela donne ceci : 
+
+```yaml
+services:
+    bdd:
+        image: mysql:8.0
         volumes:
             - bdd_data:/var/lib/mysql
         command: --default-authentication-plugin=mysql_native_password
@@ -139,18 +171,33 @@ services:
             MYSQL_USER: wordpress
             MYSQL_PASSWORD: password
 ```
+</p>
 
 
+<details><summary>Solution</summary>
+</p>
+
+Pour la partie base de données il faut définir de$s variables d'environnement.  
+Et pour utiliser le bon plugin, il faut utiliser le pramètre `command`.
+
+Cela donne ceci : 
+
+```yaml
+services:
+    bdd:
+        image: mysql:8.0
+        volumes:
+            - bdd_data:/var/lib/mysql
+        command: --default-authentication-plugin=mysql_native_password
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: wordpress
+            MYSQL_USER: wordpress
+            MYSQL_PASSWORD: password
+```
+</p>
 
 
-Ecrire un fichier [docker-compose.yml](https://docs.docker.com/compose/compose-file/) dans lequel seront déclarés 3 "services" :
-
-
-## Service "bdd" (aka le container MySQL)
-
-Uitilisez une [image officielle](https://hub.docker.com/_/mysql).   
-Créer un volume persistent qui sera attaché au container.  
-Ainsi les données ajoutées dans votre base de données ne seront pas perdues à chaque re-démarrage de votre container MySQL.
 
 _Remarques_:
 
