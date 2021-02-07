@@ -171,6 +171,7 @@ services:
             MYSQL_PASSWORD: password
 ```
 </p>
+</details>
 
 Maintenant lancer la commande :
 ```shell
@@ -229,7 +230,7 @@ docker-compose exec -- bdd bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
 
 
 <details><summary>Solution</summary>
-</p>
+<p>
 
 Pour la partie base de données il faut définir de$s variables d'environnement.  
 Et pour utiliser le bon plugin, il faut utiliser le pramètre `command`.
@@ -250,7 +251,7 @@ services:
             MYSQL_PASSWORD: password
 ```
 </p>
-
+</details>
 
 
 _Remarques_:
