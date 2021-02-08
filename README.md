@@ -157,7 +157,8 @@ Et dans la documentation sur les [volumes](https://github.com/compose-spec/compo
 
 <details><summary>solution service bdd</summary>
 <p>
-```
+
+```yaml
 services:
     bdd:
         image: mysql:8.0
