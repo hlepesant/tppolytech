@@ -222,10 +222,54 @@ _Remarques_:
 Les [variables d'environnement](https://docs.docker.com/compose/environment-variables/)
 sont très souvent utilisées pour passer des options aux images Docker.
 
+### Service PHP
+
+Il existe des images [Docker pour PHP](https://hub.docker.com/_/php), cependant
+nous allons construire notre propre image avec un Dockerfile.
+
+Toujours dans le répertoire "atelier", créer un sous-répertoire "php".  
+
+```shell
+mkdir phpfpm
+vi phpfpm/Dockerfile
+```
+
+A noter que l'installation de PHP-FPM sur un serveur ou une machine virtuelle
+pourrait être fait par le script shell suivant :
+
+```shell
+apt-get update
+apt-get install apt-transport-https lsb-release ca-certificates gnupg2 procps
+apt-get install php7.3-common php7.3-cli php7.3-fpm php7.3-mysql php7.3-apcu php7.3-gd php7.3-imagick php7.3-curl php7.3-intl php-redis
+apt-get clean
+apt-get autoclean
+```
+
+Je vous invite à le traduire en Dockerfile.  
+
+
+Par ailleurs il faudra modifier quelques options du php.ini.
+
+Pour augmenter la verbosité de PHP-FPM :
+
+```shell
+sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/7.3/fpm/php.ini
+```
+
+Mais aussi faire en sorte que PHP-FPM, ne soit pas lancer en arrière plan.
+
+```shell
+sed -i 's/\;daemonize.*/daemonize = no/' /etc/php/7.3/fpm/php-fpm.conf
+```
+
+
+
+
 
 ## Service Nginx
 
-Utilisez une [image officielle](https://hub.docker.com/_/nginx) pour démarrer le container.  
+Comme pour MySQL, nous allons utiliser l'[image officielle](https://hub.docker.com/_/nginx)
+pour le service web.  
 Le port 80 du container sera exposé et accessible par le port 8080.  
 Le container nginx sera "linké" au container php-fpm.
 
