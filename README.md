@@ -9,7 +9,8 @@ L'application web [Wordpress](https://wordpress.org/) nécessite :
 
 ## Objectif
 
-Pendant cet atelier nous allons donc de démarrer une stack applicative complète à l'aide de containers.  
+Pendant cet atelier nous allons donc de démarrer une stack applicative complète
+à l'aide de containers.  
 
 ```
                      ________________________________________________________
@@ -26,19 +27,31 @@ ______________       |   _____________       __________        __________   |
 
 * Le navigateur web se connecte sur le port 80 (http) d'une IP.  
 * Le serveur Nginx demande à PHP-FPM d'interpréter les fichiers PHP.  
-* Lors de cette interprétation PHP-FPM va aller chercher des données dans la base de données MySQL.  
+* Lors de cette interprétation PHP-FPM va aller chercher des données dans la
+base de données MySQL.  
 
-Pour pouvoir lancer notre stack en une seule ligne de commande, nous allons Utiliser [docker-compose](https://docs.docker.com/compose/).
+Pour pouvoir lancer notre stack en une seule ligne de commande, nous allons
+utiliser [docker-compose](https://docs.docker.com/compose/).
 
 
 # Les différentes étapes de l'atelier
 
 ## 1 Installer Docker Compose
 
-Installer [docker-compose](https://docs.docker.com/compose/install/) sur la VM Ubuntu de la semaine dernière.
+Suivre la procédure d'installation de [docker-compose](https://docs.docker.com/compose/install/)
+sur la VM Ubuntu de la semaine dernière.
 
+Profitez-en pour install [jq](https://stedolan.github.io/jq/)
 
-## 2 Ecrire votre fichier docker-compose.yml
+```shell
+apt-get update
+apt-get -y install jq
+```
+
+Cet outils nous permettra de faire des recherches dans les sorties de Docker au
+format [JSON](https://en.wikipedia.org/wiki/JSON).
+
+## 2 Créer le fichier docker-compose.yml
 
 Créez un répertoire "atelier", et placez-vous dedans.
 
@@ -47,11 +60,7 @@ mkdir atelier
 cd atelier
 ```
 
-Utilisez votre editeur de texte préféré pour créer le fichier docker-compose.yml.
-
-```shell
-vi docker-compose.yml
-```
+C'est dans ce répertoire que nous allons créer le fichier docker-compose.yml.
 
 Docker-compose utilise la syntax [YAML](https://fr.wikipedia.org/wiki/YAML).  
 Ce fichier est divisé en plusieurs éléments de "haut niveau" :
@@ -61,16 +70,22 @@ Ce fichier est divisé en plusieurs éléments de "haut niveau" :
  * [Services](https://github.com/compose-spec/compose-spec/blob/master/spec.md#services-top-level-element)
  * [Networks](https://github.com/compose-spec/compose-spec/blob/master/spec.md#networks-top-level-element)
  * [Secrets](https://github.com/compose-spec/compose-spec/blob/master/spec.md#secrets-top-level-element)
- * [Configs](https://github.com/compose-spec/compose-spec/blob/master/spec.md#configs-top-level-element) 
+ * [Configs](https://github.com/compose-spec/compose-spec/blob/master/spec.md#configs-top-level-element)
 
 
-Les spécifications complète d'un fichier docker-compose.yml peuvent être trouvées 
-[ici](https://github.com/compose-spec/compose-spec/blob/master/spec.md), mais nous 
-allons faire simple en n'utilisant que :
+Les spécifications complète d'un fichier docker-compose.yml peuvent être trouvées
+[ici](https://github.com/compose-spec/compose-spec/blob/master/spec.md), mais
+nous allons faire simple en n'utilisant que :
  * [Version](https://github.com/compose-spec/compose-spec/blob/master/spec.md#version-top-level-element)
  * [Volumes](https://github.com/compose-spec/compose-spec/blob/master/spec.md#volumes-top-level-element)
  * [Services](https://github.com/compose-spec/compose-spec/blob/master/spec.md#services-top-level-element)
 
+
+ C'est parti, utilisez votre éditeur de texte préféré pour créer le fichier docker-compose.yml.
+
+ ```shell
+ vi docker-compose.yml
+ ```
 
 ### 1.1  Version
 
@@ -81,30 +96,35 @@ version: '3.8'
 
 ### 1.2 Volumes
 
-Cet éléments nous permet de définir des "Volumes Persistents", ainsi les modifications apportées à notre 
-image seront conservées entre deux démarrage.
+Avec "volumes" nous allons pouvoir créer des volumes de différents types, et les
+partager entre différents services sans passer par l'option "volume_from".  
+Ainsi nous pouvons créer des volumes persistant et ne plus perdre les données
+entre deux démarrages de container.
 
-Pour l'atelier le premier volume qu'il nous faut est celui qui sera utiliser par le container MySQL.  
-Nous allons appeler ce volume 'bdd_data'.
-Modifions le fihcier docker-compose.yml en ajoutant la section suivante :
+Notre premier volume sera celui de la base de données.  
+Nous l'attacherons dans deuxième temps u service MySQL.  
+Nous appelerons ce volume "bdd_data".  
+Modifions le fichier docker-compose.yml en ajoutant la section suivante :
 
 ```yaml
 volumes:
     bdd_data:
 ```
 
-Lancer la commande :
+Lancer les commandes :
 ```shell
-docker-compose up
+docker-composer config
+docker-compose up -d
 ```
 
 Qu'observez-vous ?
 
-Lancer les commandes : 
+Lancer les commandes :
 ```shell
 docker-compose ps
 docker volume ls
-docker volume inspect atelier_bdd_data
+docker volume inspect atelier_bdd_data | jq .
+docker volume inspect atelier_bdd_data | jq .[0]
 ```
 
 ### 1.3 Service
@@ -112,7 +132,7 @@ docker volume inspect atelier_bdd_data
 Dans cette section, nous allons définir les trois services suivants :
 
  * bdd : pour le container MySQL
- * php : pour le container PHP 
+ * php : pour le container PHP
  * web : pour le container Nginx
 
 
@@ -121,49 +141,29 @@ Dans cette section, nous allons définir les trois services suivants :
 Ce service ne sera pas exposé en dehors de la slack (réseau interne Docker).  
 Il sera "linké" au service PHP (on verra ça plus tard).  
 
-Il existe une [image Docker MySQL officielle](https://hub.docker.com/_/mysql).   
+Il existe une image [Docker MySQL officielle](https://hub.docker.com/_/mysql).   
 Nous allons l'utiliser pour notre service "bdd".
-Modifier le fihcier docker-compoe.yml et débuter la section Service :
 
-```yaml
-services:
-    bdd:
-        image: mysql:8.0
-```
-
-Maintenant lancer la commande :
-```shell
-docker-compose up -d
-docker-compose logs -f 
-```
-
-Qu'observez-vous ?
-Le container MySQL est-il toujours actif ?
-
-Rechercher dans la [documentation de l'image MySQL](https://hub.docker.com/_/mysql) 
+Rechercher dans la [documentation de l'image MySQL](https://hub.docker.com/_/mysql)
 comment faire pour :
 
  * Définir un mot de passe pour l'utilisateur "root" de MySQL ?
  * Définir un username, et son mot de passe, autre que "root" ?
  * Créer automatiquement une base de données "wordpress" ?
+ * Contourner le plugin d'authentification de MySQL 8, et revenir au plugin natif
 
-Toujours dans cette [page](https://hub.docker.com/_/mysql), trouvez comment 
-contourner le nouveau plugin d'authentification de MySQL 8, et revenir au 
-plugin natif ?
+Et dans la documentation sur les [volumes](https://github.com/compose-spec/compose-spec/blob/master/spec.md#volumes-top-level-element), comment utiliser notre volume "bdd_data".
 
-<details><summary>Solution</summary>
+
+<details><summary>solution service bdd</summary>
 <p>
-
-Pour la partie base de données il faut définir de$s variables d'environnement.  
-Et pour utiliser le bon plugin, il faut utiliser le pramètre `command`.
-
-Cela donne ceci : 
-
 ```yaml
 services:
     bdd:
         image: mysql:8.0
         command: --default-authentication-plugin=mysql_native_password
+        volumes:
+            - bdd_data:/var/lib/mysql
         environment:
             MYSQL_ROOT_PASSWORD: password
             MYSQL_DATABASE: wordpress
@@ -173,10 +173,13 @@ services:
 </p>
 </details>
 
-Maintenant lancer la commande :
+
+Une fois que le fichier docker-compose.yml est sauvegardé, lancer les commandes :
+
 ```shell
 docker-compose up -d
-docker-compose logs -f 
+docker-compose logs -f
+docker-compose logs bdd | grep Entrypoint
 ```
 
 Qu'observez-vous ?
@@ -194,13 +197,12 @@ Comparer les commandes :
 ```shell
 docker-compose exec -- bdd bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
 ```
-et 
+et
 ```shell
 docker exec -ti <CONTAINER_ID> bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
 ```
 
 en remplaçant '<CONTAINER_ID>' par l'ID du container de la commande `docker ps`.  
-
 
 
 Vous  êtes connecté à la base de données.
@@ -210,7 +212,9 @@ Nous allons afficher les bases de données existantes :
 mysql> show databases;
 ```
 
-Voyez-vous la base de données `wordpress` ?
+Voyez-vous la base de données `wordpress` ?  
+
+
 
 Créer la base de donnée `polytech` :
 ```shell
@@ -221,7 +225,7 @@ mysql> show databases;
 Trouvez-vous la base de données `polytech` ?
 
 Revenez sur la console précédente, et taper "Ctrl+C".
-Lancer la commande : 
+Lancer la commande :
 
 ```shell
 docker-compose start
@@ -235,7 +239,7 @@ docker-compose exec -- bdd bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
 Pour la partie base de données il faut définir de$s variables d'environnement.  
 Et pour utiliser le bon plugin, il faut utiliser le pramètre `command`.
 
-Cela donne ceci : 
+Cela donne ceci :
 
 ```yaml
 services:
