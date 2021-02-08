@@ -157,7 +157,7 @@ Et dans la documentation sur les [volumes](https://github.com/compose-spec/compo
 
 <details><summary>solution service bdd</summary>
 <p>
-```yaml
+```
 services:
     bdd:
         image: mysql:8.0
@@ -184,6 +184,8 @@ docker-compose logs bdd | grep Entrypoint
 
 Qu'observez-vous ?
 Le container MySQL est-il toujours actif ?
+La base de données "wordpress" a-t-elle été créée ?  
+Comment ?
 
 Dans une autre console, lancer la commande suivante :
 
