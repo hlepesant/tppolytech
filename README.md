@@ -127,7 +127,7 @@ docker volume inspect atelier_bdd_data | jq .
 docker volume inspect atelier_bdd_data | jq .[0]
 ```
 
-### 1.3 Service
+### 1.3 Services
 
 Dans cette section, nous allons définir les trois services suivants :
 
@@ -208,7 +208,7 @@ docker exec -ti <CONTAINER_ID> bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
 en remplaçant '<CONTAINER_ID>' par l'ID du container de la commande `docker ps`.  
 
 
-Vous  êtes connecté à la base de données.
+En effet, vous  êtes connecté à la base de données.  
 Nous allons afficher les bases de données existantes :
 
 ```shell
@@ -217,67 +217,10 @@ mysql> show databases;
 
 Voyez-vous la base de données `wordpress` ?  
 
-
-
-Créer la base de donnée `polytech` :
-```shell
-mysql> create database polytech;
-mysql> show databases;
-```
-
-Trouvez-vous la base de données `polytech` ?
-
-Revenez sur la console précédente, et taper "Ctrl+C".
-Lancer la commande :
-
-```shell
-docker-compose start
-docker-compose exec -- bdd bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
-```
-
-
-<details><summary>Solution</summary>
-<p>
-
-Pour la partie base de données il faut définir de$s variables d'environnement.  
-Et pour utiliser le bon plugin, il faut utiliser le pramètre `command`.
-
-Cela donne ceci :
-
-```yaml
-services:
-    bdd:
-        image: mysql:8.0
-        volumes:
-            - bdd_data:/var/lib/mysql
-        command: --default-authentication-plugin=mysql_native_password
-        environment:
-            MYSQL_ROOT_PASSWORD: password
-            MYSQL_DATABASE: wordpress
-            MYSQL_USER: wordpress
-            MYSQL_PASSWORD: password
-```
-</p>
-</details>
-
-
 _Remarques_:
 
-Préciser les [variables d'environnement](https://docs.docker.com/compose/environment-variables/) suivantes dans votre fichier docker-compose.yml :  
-
- * MYSQL_ROOT_PASSWORD : This variable is mandatory. It defines the password that will be set for the MySQL root superuser account
- * MYSQL_DATABASE : This variable is optional and allows you to specify the name of a database to be created on image startup
- * MYSQL_USER et MYSQL_PASSWORD : These variables are optional, used in conjunction to create a new user and to set that user's password
-
-De plus, si vous décidez d'utiliser une version 8.x de MySQL, il faut étendre la commande de lancemenet de MySQL avec l'option :
-```
---default-authentication-plugin=mysql_native_password
-```
-
-
-
-
-
+Les [variables d'environnement](https://docs.docker.com/compose/environment-variables/)
+sont très souvent utilisées pour passer des options aux images Docker.
 
 
 ## Service Nginx
