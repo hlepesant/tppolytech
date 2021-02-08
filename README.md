@@ -183,10 +183,10 @@ docker-compose logs -f
 docker-compose logs bdd | grep Entrypoint
 ```
 
-Qu'observez-vous ?
-Le container MySQL est-il toujours actif ?
-La base de données "wordpress" a-t-elle été créée ?  
-Comment ?
+- Qu'observez-vous ?
+- Le container MySQL est-il toujours actif ?
+- La base de données "wordpress" a-t-elle été créée ?  
+- Comment ?
 
 Dans une autre console, lancer la commande suivante :
 
