@@ -39,7 +39,8 @@ utiliser [docker-compose](https://docs.docker.com/compose/).
 ## Installer Docker Compose
 
 Suivre la procédure d'installation de [docker-compose](https://docs.docker.com/compose/install/)
-sur la VM Ubuntu 18.04 de la semaine dernière, celle où vous aviez installer [Docker](https://www.docker.com/).
+sur la VM Ubuntu 18.04 de la semaine dernière, celle où vous aviez installer
+[Docker](https://www.docker.com/).
 
 Profitez-en pour install [jq](https://stedolan.github.io/jq/).  
 En effet nous profiterons de ce TP pour appréhender cet outils.
@@ -49,28 +50,37 @@ apt-get update
 apt-get -y install jq
 ```
 
-## Récupérer la dernière version de Wordpress
+## Répertoire de travail
 
-C'est l'application web que nous voulons déployer avec nos containers. Nous devons donc récupérer les sources.  
-Pour cela récupérer le script [getwp.sh](https://raw.githubusercontent.com/hlepesant/tppolytech/master/getwp.sh).  
+Toutes les actions suivantes seront réalisées dans un répertoire "atelier".
+Créez ce répertoire "atelier", et placez-vous dedans.
 
 ```shell
 mkdir atelier
 cd atelier
+```
+
+## Récupérer la dernière version de Wordpress
+
+C'est l'application web que nous voulons déployer avec nos containers. Nous
+devons donc récupérer les sources.  
+Pour cela récupérer le script [getwp.sh](https://raw.githubusercontent.com/hlepesant/tppolytech/master/getwp.sh).  
+
+```shell
 wget https://raw.githubusercontent.com/hlepesant/tppolytech/master/getwp.sh
 chmod +x getwp.sh
 ./getwp.sh
 ```
 
+Le script télécharge la dernière version de Wordpress francisée,
+décompresse l'archive dans le répertoire "wordpress",
+créer quelques répertoires pour le bon fonctionnement de l'application,
+et prépare le fichier de configuration de wordpress (wordpress/wp-config.php).  
+Nous utiliserons plus tard ce répertoire comme volume partagé avec Docker.  
+
 
 ## Créer le fichier docker-compose.yml
 
-Créez un répertoire "atelier", et placez-vous dedans.
-
-```shell
-mkdir atelier
-cd atelier
-```
 
 C'est dans ce répertoire que nous allons créer le fichier docker-compose.yml.
 
