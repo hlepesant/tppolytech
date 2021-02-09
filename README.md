@@ -1,6 +1,4 @@
-# TP Docker 2
-
-# Objectif : Création d'une stack Wordpress dans des containers
+# TP Docker 2 : Création d'une stack Wordpress dans des containers
 
 ## Rappels
 
@@ -38,22 +36,34 @@ utiliser [docker-compose](https://docs.docker.com/compose/).
 
 # Les différentes étapes de l'atelier
 
-## 1 Installer Docker Compose
+## Installer Docker Compose
 
 Suivre la procédure d'installation de [docker-compose](https://docs.docker.com/compose/install/)
-sur la VM Ubuntu de la semaine dernière.
+sur la VM Ubuntu 18.04 de la semaine dernière, celle où vous aviez installer [Docker](https://www.docker.com/).
 
-Profitez-en pour install [jq](https://stedolan.github.io/jq/)
+Profitez-en pour install [jq](https://stedolan.github.io/jq/).  
+En effet nous profiterons de ce TP pour appréhender cet outils.
 
 ```shell
 apt-get update
 apt-get -y install jq
 ```
 
-Cet outils nous permettra de faire des recherches dans les sorties de Docker au
-format [JSON](https://en.wikipedia.org/wiki/JSON).
+## Récupérer la dernière version de Wordpress
 
-## 2 Créer le fichier docker-compose.yml
+C'est l'application web que nous voulons déployer avec nos containers. Nous devons donc récupérer les sources.  
+Pour cela récupérer le script [getwp.sh](https://raw.githubusercontent.com/hlepesant/tppolytech/master/getwp.sh).  
+
+```shell
+mkdir atelier
+cd atelier
+wget https://raw.githubusercontent.com/hlepesant/tppolytech/master/getwp.sh
+chmod +x getwp.sh
+./getwp.sh
+```
+
+
+## Créer le fichier docker-compose.yml
 
 Créez un répertoire "atelier", et placez-vous dedans.
 
