@@ -1,4 +1,6 @@
-# TP Docker : Création d'une stack Wordpress dans des containers
+# TP Docker 2
+
+# Objectif : Création d'une stack Wordpress dans des containers
 
 ## Rappels
 
