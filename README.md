@@ -247,7 +247,6 @@ apt-get autoclean
 
 Je vous invite à le traduire en Dockerfile.  
 
-
 Par ailleurs il faudra modifier quelques options du php.ini.
 
 Pour augmenter la verbosité de PHP-FPM :
@@ -263,8 +262,58 @@ sed -i 's/\;daemonize.*/daemonize = no/' /etc/php/7.3/fpm/php-fpm.conf
 ```
 
 
+<details><summary>solution service bdd</summary>
+<p>
 
+```
+FROM debian:buster-slim
 
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update \
+    && apt-get -y install apt-transport-https \
+        lsb-release \
+        ca-certificates \
+        gnupg2 \
+        procps \
+    && apt-get -y install php7.3-common \
+        php7.3-cli \
+        php7.3-fpm \
+        php7.3-mysql \
+        php7.3-apcu \
+        php7.3-gd \
+        php7.3-imagick \
+        php7.3-curl \
+        php7.3-intl \
+        php-redis \
+        net-tools \
+        default-mysql-client \
+    && apt-get clean \
+    && apt-get autoclean
+
+RUN sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/7.3/fpm/php.ini
+RUN sed -i 's/\;daemonize.*/daemonize = no/' /etc/php/7.3/fpm/php-fpm.conf
+RUN sed -i 's/error_log = .*/error_log = \/proc\/self\/fd\/2/' /etc/php/7.3/fpm/php-fpm.conf
+
+RUN mkdir /var/run/php
+
+VOLUME /usr/share/nginx/html
+
+EXPOSE 9000
+
+CMD ["/usr/sbin/php-fpm7.3", "--nodaemonize"]
+```
+</p>
+</details>
+
+Maintenant que votre Dockerfile build une image Docker.  Intégrer la dans le
+fichier docker-compose.yml.
+
+Et enfin, pour que PHP-FPM et Nginx fonctionnent correctement il faut que les
+deux services est accès aux mêmes fichiers. Ici ces ficiers sont ceux de
+l'application Wordpress.  
+
+Il faut donc créer un volume
 
 ## Service Nginx
 
