@@ -82,7 +82,7 @@ Nous utiliserons plus tard ce répertoire comme volume partagé avec Docker.
 ## Créer le fichier docker-compose.yml
 
 
-C'est dans ce répertoire que nous allons créer le fichier docker-compose.yml.
+Toujours dans ce répertoire "atelier", créez le fichier docker-compose.yml.  
 
 Docker-compose utilise la syntax [YAML](https://fr.wikipedia.org/wiki/YAML).  
 Ce fichier est divisé en plusieurs éléments de "haut niveau" :
@@ -109,14 +109,15 @@ nous allons faire simple en n'utilisant que :
  vi docker-compose.yml
  ```
 
-### 1.1  Version
+### Version
 
 Ajouter les lignes suivantes à votre fichier docker-compose.yml.
+
 ```yaml
 version: '3.8'
 ```
 
-### 1.2 Volumes
+### Volumes
 
 Avec "volumes" nous allons pouvoir créer des volumes de différents types, et les
 partager entre différents services sans passer par l'option "volume_from".  
@@ -124,8 +125,8 @@ Ainsi nous pouvons créer des volumes persistant et ne plus perdre les données
 entre deux démarrages de container.
 
 Notre premier volume sera celui de la base de données.  
-Nous l'attacherons dans deuxième temps u service MySQL.  
-Nous appelerons ce volume "bdd_data".  
+Nous l'attacherons dans un deuxième temps au service MySQL.  
+Nous appellerons ce volume "bdd_data".  
 Modifions le fichier docker-compose.yml en ajoutant la section suivante :
 
 ```yaml
@@ -144,12 +145,28 @@ Qu'observez-vous ?
 Lancer les commandes :
 ```shell
 docker-compose ps
-docker volume ls
-docker volume inspect atelier_bdd_data | jq .
-docker volume inspect atelier_bdd_data | jq .[0]
+docker volume list
 ```
 
-### 1.3 Services
+Notez le nom du volume.  Docker-compose a nommé le volume avec pour préfix le
+répertoire dans lequel la commande "docker-compose" a été lancée.  
+
+Maintenant inspectons le volume :
+
+```shell
+docker volume inspect atelier_bdd_data | jq .
+docker volume inspect atelier_bdd_data | jq .[0]
+docker volume inspect atelier_bdd_data | jq .[0].Mountpoint
+```
+
+Observez la coloration syntaxique offerte par "jq".  
+Et l'utilisation de filtre pour afficher les informations voulues.  
+
+Afficher le contenu du répertoire correspondant au "Mountpoint".  
+Que notez-vous ?
+
+
+### Services
 
 Dans cette section, nous allons définir les trois services suivants :
 
@@ -159,9 +176,6 @@ Dans cette section, nous allons définir les trois services suivants :
 
 
 #### 1.3.1 Service "bdd" (aka MySQL)
-
-Ce service ne sera pas exposé en dehors de la slack (réseau interne Docker).  
-Il sera "linké" au service PHP (on verra ça plus tard).  
 
 Il existe une image [Docker MySQL officielle](https://hub.docker.com/_/mysql).   
 Nous allons l'utiliser pour notre service "bdd".
@@ -174,7 +188,7 @@ comment faire pour :
  * Créer automatiquement une base de données "wordpress" ?
  * Contourner le plugin d'authentification de MySQL 8, et revenir au plugin natif
 
-Et dans la documentation sur les [volumes](https://github.com/compose-spec/compose-spec/blob/master/spec.md#volumes-top-level-element), comment utiliser notre volume "bdd_data".
+Et dans la documentation sur les [volumes](https://github.com/compose-spec/compose-spec/blob/master/spec.md#volumes-top-level-element), comment utiliser notre volume "bdd_data" défini plus haut.
 
 
 <details><summary>solution service bdd</summary>
