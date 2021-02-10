@@ -28,6 +28,6 @@ EOF
 
 chmod 0644 wordpress/wp-config.php
 sudo mkdir -p wordpress/wp-content/{plugins,themes,upgrade,uploads}
-sudo chown -R 33:33 wordpress/wp-content
+sudo chown -R 33:33 wordpress
 
 rm -f wordpress.tar.gz
