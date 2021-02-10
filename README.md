@@ -166,7 +166,7 @@ Afficher le contenu du répertoire correspondant au "Mountpoint".
 Que notez-vous ?
 
 
-### Services
+### Les Services
 
 Dans cette section, nous allons définir les trois services suivants :
 
@@ -175,7 +175,7 @@ Dans cette section, nous allons définir les trois services suivants :
  * web : pour le container Nginx
 
 
-#### 1.3.1 Service "bdd" (aka MySQL)
+#### Service "bdd" (aka MySQL)
 
 Il existe une image [Docker MySQL officielle](https://hub.docker.com/_/mysql).   
 Nous allons l'utiliser pour notre service "bdd".
@@ -223,8 +223,12 @@ docker-compose logs bdd | grep Entrypoint
 - Le container MySQL est-il toujours actif ?
 - La base de données "wordpress" a-t-elle été créée ?  
 - Comment ?
+- Afficher à nouveau le contenu du répertoire correspondant au "Mountpoint"
+du volume "bdd_data"
 
-Dans une autre console, lancer la commande suivante :
+#### Continuons de jouer avec notre container MySQL.  
+
+Exécuter la commande suivante :
 
 ```shell
 docker-compose exec -- bdd bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
@@ -242,7 +246,6 @@ docker exec -ti <CONTAINER_ID> bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
 ```
 
 en remplaçant '<CONTAINER_ID>' par l'ID du container de la commande `docker ps`.  
-
 
 En effet, vous  êtes connecté à la base de données.  
 Nous allons afficher les bases de données existantes :
