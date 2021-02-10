@@ -371,6 +371,7 @@ CMD ["/usr/sbin/php-fpm7.3", "--nodaemonize"]
 
 Maintenant que votre Dockerfile build une image Docker.  Intégrer la dans le
 fichier docker-compose.yml.  
+
 Il faudra ajouter :
 * les [variables d'environment](https://docs.docker.com/compose/environment-variables/#set-environment-variables-in-containers)
 que vous retrouverez dans le fichier "wordpress/wp-config.php" créer par le script
@@ -379,8 +380,10 @@ que vous retrouverez dans le fichier "wordpress/wp-config.php" créer par le scr
 correspondant au répertoire contenant les sources de Wordpress,
 * [lié](https://docs.docker.com/compose/networking/#links) le service "php", au service "bdd".
 
+Vous pouvez vous baser sur le template présent dans le répertoire "phpfpm".  
 
-<details><summary>solution Dockerfile php</summary>
+
+<details><summary>solution service php</summary>
 <p>
 
 ```
@@ -393,51 +396,65 @@ php:
     MYSQL_DATABASE: wordpress
     MYSQL_USER: wordpress
     MYSQL_PASSWORD: password
-    MYSQL_HOST: mysql
+    MYSQL_HOST: bdd
   links:
     - bdd
 ```
 </p>
 </details>
 
+Lancer les commandes suivantes :
+```shell
+docker-compose up -d
+docker-compose ps
+docker-composer logs
+```
 
-Il faut donc créer un volume
+Qu'observer vous ?
 
-## Service Nginx
+
+### Service Nginx
 
 Comme pour MySQL, nous allons utiliser l'[image officielle](https://hub.docker.com/_/nginx)
 pour le service web.  
-Le port 80 du container sera exposé et accessible par le port 8080.  
+Le port 80 du container sera exposé et accessible par le port 8000.  
 Le container nginx sera "linké" au container php-fpm.
+Il y aura deux volumes :
+1. le source de Wordpress
+2. un répertoire contenant un fichier de configuration d'un
+[hôte virtuel](https://www.nginx.com/resources/wiki/start/topics/examples/server_blocks/)
 
-### Container PHP-FPM
+Le but de l'atelier n'étant pas d'apprendre à configurer Nginx. Une version est
+proposé dans le répertoire "nginx/conf.d/". Ce répertoire sera le deuxième
+volume à monter dans le container.
 
-Cette fois-ci nous allons créer notre image Docker avec un Dockerfile.  
-En se basant sur une [image Debian officielle](https://hub.docker.com/_/debian) créer une image Docker permettant de lancer le service PHP-FPM.  
-Avec notre Dockerfile nous installerons des paquets PHP de Debian.  
-Les paquets sont les suivants :
- - php7.3-fpm
- - php7.3-mysql
- - php7.3-gd
- - php7.3-imagick
- - php7.3-intl
- - php7.3-mbstring
- - php7.3-xml
- - php7.3-curl
- - php7.3-apcu
-Le container sera "linké" avec le container MySQL.
+<details><summary>solution service web</summary>
+<p>
 
-
-## Wordpress
-
-La dernière version de [Wordpress](https://fr.wordpress.org/download/) sera décompressée dans un répertoire local.  
-Le répertoire sera monté sous forme de "volume" dans les containers Nginx et PHP-FPM.
-
-
-## Elements fournis
-
-* Nginx : Le fichier de configuration à monter dans votre container dans /etc/nginx/conf.d/
-* Le script getwp.sh qui télécharge la dernière version de Wordpress et la décompresse en local. Le répertoire devra être monté dans les containers Nginx et PHP-FPM dans le répertoire /var/www/html/
+```
+web:
+  image: nginx:mainline
+  volumes:
+    - ./wordpress:/usr/share/nginx/html
+    - ./nginx/conf.d:/etc/nginx/conf.d
+  ports:
+    - "8000:80"
+  links:
+    - php
+```
+</p>
+</details>
 
 
- Bonne chance.
+Lancer les commandes suivantes :
+```shell
+docker-compose up -d
+docker-compose ps
+docker-composer logs
+```
+
+Qu'observer vous ?
+
+## Check
+
+Lancer votre navigateur et connecter vous sur l'url : http://<IP VM>:8000/
