@@ -264,7 +264,8 @@ sont très souvent utilisées pour passer des options aux images Docker.
 ### Service PHP
 
 Il existe des images [Docker pour PHP](https://hub.docker.com/_/php), cependant
-nous allons construire notre propre image avec un Dockerfile.
+nous allons construire notre propre image avec un Dockerfile, en se basant sur
+l'image [debian:buster-slim](https://hub.docker.com/_/debian)
 
 Toujours dans le répertoire "atelier", créer un sous-répertoire "php".  
 
@@ -284,43 +285,47 @@ apt-get install apt-transport-https lsb-release ca-certificates gnupg2 procps \
   php7.3-imagick php7.3-curl php7.3-intl php-redis
 apt-get clean
 apt-get autoclean
+mkdir /var/run/php
 ```
 
-Il faudra aussi modifier quelques fichiers :
+Il faudra aussi modifier quelques fichiers.  
+Cependant comme vous ne pouvez pas utiliser un éditeur de texte lors du build
+d'une image
 
-** /etc/php/7.3/fpm/php.ini **
+_/etc/php/7.3/fpm/php.ini_
 
-Pour augmenter la verbosité de PHP-FPM :
+* Pour augmenter la verbosité de PHP-FPM :
 ```shell
 sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/7.3/fpm/php.ini
 ```
 
+_/etc/php/7.3/fpm/php-fpm.conf_
 
-Mais aussi faire en sorte que PHP-FPM, ne soit pas lancer en arrière plan.
+* Faire en sorte que PHP-FPM, ne soit pas lancer en arrière plan.
 ```shell
 sed -i 's/\;daemonize.*/daemonize = no/' /etc/php/7.3/fpm/php-fpm.conf
 ```
-
-Et surtout rediriger les logs vers la sortie standard :
+* Rediriger les logs vers la sortie standard :
 ```shell
 sed -i 's/error_log = .*/error_log = \/proc\/self\/fd\/2/' /etc/php/7.3/fpm/php-fpm.conf
 ```
 
+_/etc/php/7.3/fpm/pool.d/www.conf_
 
-Configuration d'un "pool" de PHP-FPM :
+* Configuration d'un "pool" de PHP-FPM :
 
 ```shell
+sed -i 's/\;clear_env = .*/clear_env = no/' /etc/php/7.3/fpm/pool.d/www.conf
 sed -i 's/^listen = .*/listen = 0.0.0.0:9000/' /etc/php/7.3/fpm/pool.d/www.conf
 ```
 
-Enfin, le script "[systemd](https://systemd.io/) s'occupe de créer le répertoire
-où le fichier
-
 Je vous invite à le traduire en Dockerfile les indications ci-dessus.  
+A noter que le port 9000 sera exposé, et que le service PHP et Nginx doivent
+partager les sources de Wordpress selon le même PATH. Cela se fera sous la forme
+d'un volume Docker.
 
 
-
-<details><summary>solution service php</summary>
+<details><summary>solution Dockerfile php</summary>
 <p>
 
 ```
@@ -365,11 +370,36 @@ CMD ["/usr/sbin/php-fpm7.3", "--nodaemonize"]
 </details>
 
 Maintenant que votre Dockerfile build une image Docker.  Intégrer la dans le
-fichier docker-compose.yml.
+fichier docker-compose.yml.  
+Il faudra ajouter :
+* les [variables d'environment](https://docs.docker.com/compose/environment-variables/#set-environment-variables-in-containers)
+que vous retrouverez dans le fichier "wordpress/wp-config.php" créer par le script
+"getwp.sh".  
+* le [volume](https://docs.docker.com/storage/volumes/#start-a-container-with-a-volume)
+correspondant au répertoire contenant les sources de Wordpress,
+* [lié](https://docs.docker.com/compose/networking/#links) le service "php", au service "bdd".
 
-Et enfin, pour que PHP-FPM et Nginx fonctionnent correctement il faut que les
-deux services est accès aux mêmes fichiers. Ici ces ficiers sont ceux de
-l'application Wordpress.  
+
+<details><summary>solution Dockerfile php</summary>
+<p>
+
+```
+php:
+  build:
+    context: ./phpfpm
+  volumes:
+    - ./wordpress:/usr/share/nginx/html
+  environment:
+    MYSQL_DATABASE: wordpress
+    MYSQL_USER: wordpress
+    MYSQL_PASSWORD: password
+    MYSQL_HOST: mysql
+  links:
+    - bdd
+```
+</p>
+</details>
+
 
 Il faut donc créer un volume
 
