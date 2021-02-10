@@ -277,31 +277,50 @@ A noter que l'installation de PHP-FPM sur un serveur ou une machine virtuelle
 pourrait être fait par le script shell suivant :
 
 ```shell
+export DEBIAN_FRONTEND="noninteractive"
 apt-get update
-apt-get install apt-transport-https lsb-release ca-certificates gnupg2 procps
-apt-get install php7.3-common php7.3-cli php7.3-fpm php7.3-mysql php7.3-apcu php7.3-gd php7.3-imagick php7.3-curl php7.3-intl php-redis
+apt-get install apt-transport-https lsb-release ca-certificates gnupg2 procps \
+  php7.3-common php7.3-cli php7.3-fpm php7.3-mysql php7.3-apcu php7.3-gd \
+  php7.3-imagick php7.3-curl php7.3-intl php-redis
 apt-get clean
 apt-get autoclean
 ```
 
-Je vous invite à le traduire en Dockerfile.  
+Il faudra aussi modifier quelques fichiers :
 
-Par ailleurs il faudra modifier quelques options du php.ini.
+** /etc/php/7.3/fpm/php.ini **
 
 Pour augmenter la verbosité de PHP-FPM :
-
 ```shell
 sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/7.3/fpm/php.ini
 ```
 
-Mais aussi faire en sorte que PHP-FPM, ne soit pas lancer en arrière plan.
 
+Mais aussi faire en sorte que PHP-FPM, ne soit pas lancer en arrière plan.
 ```shell
 sed -i 's/\;daemonize.*/daemonize = no/' /etc/php/7.3/fpm/php-fpm.conf
 ```
 
+Et surtout rediriger les logs vers la sortie standard :
+```shell
+sed -i 's/error_log = .*/error_log = \/proc\/self\/fd\/2/' /etc/php/7.3/fpm/php-fpm.conf
+```
 
-<details><summary>solution service bdd</summary>
+
+Configuration d'un "pool" de PHP-FPM :
+
+```shell
+sed -i 's/^listen = .*/listen = 0.0.0.0:9000/' /etc/php/7.3/fpm/pool.d/www.conf
+```
+
+Enfin, le script "[systemd](https://systemd.io/) s'occupe de créer le répertoire
+où le fichier
+
+Je vous invite à le traduire en Dockerfile les indications ci-dessus.  
+
+
+
+<details><summary>solution service php</summary>
 <p>
 
 ```
@@ -315,7 +334,7 @@ RUN apt-get update \
         ca-certificates \
         gnupg2 \
         procps \
-    && apt-get -y install php7.3-common \
+        php7.3-common \
         php7.3-cli \
         php7.3-fpm \
         php7.3-mysql \
