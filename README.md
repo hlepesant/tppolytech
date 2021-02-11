@@ -458,3 +458,10 @@ Qu'observer vous ?
 ## Check
 
 Lancer votre navigateur et connecter vous sur l'url : http://<IP VM>:8000/
+
+## Clean
+
+```shell
+docker-compose stop
+docker-compose rm
+```
