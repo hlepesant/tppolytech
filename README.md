@@ -425,8 +425,14 @@ Il y aura deux volumes :
 [hôte virtuel](https://www.nginx.com/resources/wiki/start/topics/examples/server_blocks/)
 
 Le but de l'atelier n'étant pas d'apprendre à configurer Nginx. Une version est
-proposé dans le répertoire "nginx/conf.d/". Ce répertoire sera le deuxième
+proposé dans le répertoire "nginx/conf.d/" (cf commande ci-dessous). Ce répertoire sera le deuxième
 volume à monter dans le container.
+
+Pour créer ce fichier de config "default.conf" :
+```shell
+mkdir -p nginx/conf.d
+wget https://raw.githubusercontent.com/hlepesant/tppolytech/master/nginx/conf.d/default.conf -O nginx/conf.d/default.conf
+```
 
 <details><summary>solution service web</summary>
 <p>
