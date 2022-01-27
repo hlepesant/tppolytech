@@ -6,16 +6,16 @@ volumes:
 services:
       
     mysql:
-        image: mysql:8.0.23
+        image: mysql:8.0.28
         command: --default-authentication-plugin=mysql_native_password
         volumes:
-            - dbdata:/var/lib/mysql
+            - ./mysql/datadir:/var/lib/mysql
         environment:
             TZ: Europe/Paris
             MYSQL_ROOT_PASSWORD: password
             MYSQL_DATABASE: wordpress
             MYSQL_USER: wordpress
-            MYSQL_PASSWORD: password
+            MYSQL_PASSWORD: wordpress
         labels:
             traefik.enable: "false"
       
@@ -32,7 +32,7 @@ services:
         environment:
             MYSQL_DATABASE: wordpress
             MYSQL_USER: wordpress
-            MYSQL_PASSWORD: password
+            MYSQL_PASSWORD: wordpress
             MYSQL_HOST: mysql
             WP_REDIS_HOST: redis
             WP_REDIS_PORT: 6379
@@ -55,7 +55,7 @@ services:
             - "traefik.http.routers.web.entrypoints=web"
 
     traefik:
-        image: traefik:v2.4.2
+        image: traefik:v2.6.0
         container_name: traefik
         command:
             - "--log.level=DEBUG"
