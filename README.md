@@ -136,15 +136,15 @@ volumes:
 
 Lancer les commandes :
 ```shell
-docker-composer config
-docker-compose up -d
+docker composer config
+docker compose up -d
 ```
 
 Qu'observez-vous ?
 
 Lancer les commandes :
 ```shell
-docker-compose ps
+docker compose ps
 docker volume list
 ```
 
@@ -214,9 +214,9 @@ services:
 Une fois que le fichier docker-compose.yml est sauvegardé, lancer les commandes :
 
 ```shell
-docker-compose up -d
-docker-compose logs -f
-docker-compose logs bdd | grep Entrypoint
+docker compose up -d
+docker compose logs -f
+docker compose logs bdd | grep Entrypoint
 ```
 
 - Qu'observez-vous ?
@@ -231,14 +231,14 @@ du volume "bdd_data"
 Exécuter la commande suivante :
 
 ```shell
-docker-compose exec -- bdd bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
+docker compose exec -- bdd bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
 ```
 
 Que s'est il passé ?
 Comparer les commandes :
 
 ```shell
-docker-compose exec -- bdd bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
+docker compose exec -- bdd bash -c 'mysql -uroot -p$MYSQL_ROOT_PASSWORD'
 ```
 et
 ```shell
@@ -405,9 +405,9 @@ php:
 
 Lancer les commandes suivantes :
 ```shell
-docker-compose up -d
-docker-compose ps
-docker-composer logs
+docker compose up -d
+docker compose ps
+docker composer logs
 ```
 
 Qu'observer vous ?
@@ -454,9 +454,9 @@ web:
 
 Lancer les commandes suivantes :
 ```shell
-docker-compose up -d
-docker-compose ps
-docker-composer logs
+docker compose up -d
+docker compose ps
+docker composer logs
 ```
 
 Qu'observer vous ?
@@ -468,6 +468,6 @@ Lancer votre navigateur et connecter vous sur l'url : http://<IP VM>:8000/
 ## Clean
 
 ```shell
-docker-compose stop
-docker-compose rm
+docker compose stop
+docker compose rm
 ```
