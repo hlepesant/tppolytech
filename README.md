@@ -3,7 +3,7 @@
 ## Rappels
 
 L'application web [Wordpress](https://wordpress.org/) nécessite :
- - Un serveur Web (Aapche2, Nginx)
+ - Un serveur Web (Apache2, Nginx)
  - PHP (7.x)
  - Un serveur de base de données (MySQL)
 
@@ -41,6 +41,17 @@ utiliser [docker-compose](https://docs.docker.com/compose/).
 Suivre la procédure d'installation de [docker-compose](https://docs.docker.com/compose/cli-command/#install-on-linux) version 2.x.
 sur la VM Ubuntu 18.04 de la semaine dernière, celle où vous aviez installer
 [Docker](https://www.docker.com/).
+
+:warning:
+Cette installation de *docker-compose* se fait sous la forme d'une extension (plugins) de Docker.  
+Cela se traduit par une utilisation de la commande :
+```
+docker compose <cmd>
+```
+Et non plus :
+```
+docker-compose  <cmd>
+```
 
 Profitez-en pour install [jq](https://stedolan.github.io/jq/).  
 En effet nous profiterons de ce TP pour appréhender cet outils.
