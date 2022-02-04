@@ -38,7 +38,7 @@ utiliser [docker-compose](https://docs.docker.com/compose/).
 
 ## Installer Docker Compose
 
-Suivre la procédure d'installation de [docker-compose](https://docs.docker.com/compose/install/)
+Suivre la procédure d'installation de [docker-compose](https://docs.docker.com/compose/cli-command/#install-on-linux) version 2.x.
 sur la VM Ubuntu 18.04 de la semaine dernière, celle où vous aviez installer
 [Docker](https://www.docker.com/).
 
