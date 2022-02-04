@@ -276,7 +276,7 @@ sont très souvent utilisées pour passer des options aux images Docker.
 
 Il existe des images [Docker pour PHP](https://hub.docker.com/_/php), cependant
 nous allons construire notre propre image avec un Dockerfile, en se basant sur
-l'image [debian:buster-slim](https://hub.docker.com/_/debian)
+l'image [debian:bullseye-slim](https://hub.docker.com/_/debian)
 
 Toujours dans le répertoire "atelier", créer un sous-répertoire "php".  
 
@@ -340,7 +340,7 @@ d'un volume Docker.
 <p>
 
 ```
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 ENV DEBIAN_FRONTEND noninteractive
 
