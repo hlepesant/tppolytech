@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -15,4 +15,4 @@ VOLUME [...]
 
 EXPOSE [...]
 
-CMD ["/usr/sbin/php7.3-fpm", "--nodaemonize"]
+CMD ["/usr/sbin/php7.4-fpm", "--nodaemonize"]
