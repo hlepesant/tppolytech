@@ -93,18 +93,19 @@ Le répertoire sera monté sous forme de "volume" dans les containers Nginx et P
 
 ## Scale Up
 ```
-docker-compose up -d
-docker-compose up --scale web=2 -d
+docker compose up -d
+docker compose up -d --scale web=2
 ```
 
 ## Scale Down
 ```
-docker-compose up --scale web=1 -d
+docker compose up -d --scale web=1
 ```
 
 # Cleaning
 ```
-docker-compose stop
-docker-compose rm
+docker compose stop
+docker compose rm
 docker volume rm tppolytech_dbdata
+docker volume rm tppolytech_shared-volume
 ```

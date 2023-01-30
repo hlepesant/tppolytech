@@ -1,15 +1,22 @@
 version: '3.8'
 
 volumes:
+    shared-volume:
     dbdata:
 
 services:
+
+    nfs:
+        build:
+            context: ./nfs
+        volumes:
+            - shared-volume:/usr/share/nginx/html
       
     mysql:
-        image: mysql:8.0.28
+        image: mysql:8.0
         command: --default-authentication-plugin=mysql_native_password
         volumes:
-            - ./mysql/datadir:/var/lib/mysql
+            - dbdata:/var/lib/mysql
         environment:
             TZ: Europe/Paris
             MYSQL_ROOT_PASSWORD: password
@@ -28,7 +35,7 @@ services:
         build:
             context: ./phpfpm
         volumes:
-            - ./wordpress:/usr/share/nginx/html
+            - shared-volume:/usr/share/nginx/html
         environment:
             MYSQL_DATABASE: wordpress
             MYSQL_USER: wordpress
@@ -41,18 +48,23 @@ services:
             - redis
         labels:
             traefik.enable: "false"
+        depends_on:
+            - nfs
 
     web:
         image: nginx:mainline
         volumes:
             - ./nginx/config/conf.d:/etc/nginx/conf.d
-            - ./wordpress:/usr/share/nginx/html
+            - shared-volume:/usr/share/nginx/html
         links:
             - phpfpm
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.web.rule=Host(`wp.polytech.io`)"
             - "traefik.http.routers.web.entrypoints=web"
+        depends_on:
+            - nfs
+            - phpfpm
 
     traefik:
         image: traefik:v2.6.0
