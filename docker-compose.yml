@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 
 volumes:
     dbdata:
@@ -6,7 +6,7 @@ volumes:
 services:
 
     mysql:
-        image: mysql:8.0.19
+        image: mysql:8.0
         volumes:
             - dbdata:/var/lib/mysql
         environment:
