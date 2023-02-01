@@ -33,7 +33,16 @@ base de données MySQL.
 Pour pouvoir lancer notre stack en une seule ligne de commande, nous allons
 utiliser [docker compose](https://docs.docker.com/compose/).
 
-Exemple de script :
+
+# Les différentes étapes de l'atelier
+
+## Installer Docker Compose
+
+Suivre la procédure d'installation de [docker-compose](https://docs.docker.com/compose/install/linux/#install-using-the-repository) version 2.x.
+sur la VM Ubuntu 18.04 de la semaine dernière, celle où vous aviez installer
+[Docker](https://www.docker.com/).
+
+### Exemple de script :
 ```shell
 #!/bin/bash
 
@@ -52,15 +61,6 @@ sudo usermod -aG docker $USER
 newgrp docker
 docker run hello-world
 ```
-
-
-# Les différentes étapes de l'atelier
-
-## Installer Docker Compose
-
-Suivre la procédure d'installation de [docker-compose](https://docs.docker.com/compose/cli-command/#install-on-linux) version 2.x.
-sur la VM Ubuntu 18.04 de la semaine dernière, celle où vous aviez installer
-[Docker](https://www.docker.com/).
 
 :warning:
 Cette installation de *docker-compose* se fait sous la forme d'une extension (plugins) de Docker.  
