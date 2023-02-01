@@ -71,41 +71,51 @@ Et non plus :
 docker-compose  <cmd>
 ```
 
-Profitez-en pour install [jq](https://stedolan.github.io/jq/).  
+Profitez-en pour install git et [jq](https://stedolan.github.io/jq/).  
 En effet nous profiterons de ce TP pour appréhender cet outils.
 
 ```shell
 apt-get update
-apt-get -y install jq
+apt-get -y install jq git
 ```
 
 ## Répertoire de travail
 
 Toutes les actions suivantes seront réalisées dans un répertoire "atelier".
-Créez ce répertoire "atelier", et placez-vous dedans.
+Cloner le repo du TP avec la commande suivante, et placez-vous dedans.
 
 ```shell
-mkdir atelier
+git clone https://github.com/hlepesant/tppolytech.git --single-branch atelier
 cd atelier
 ```
 
-## Récupérer la dernière version de Wordpress
+## Contenu du répertoire
 
-C'est l'application web que nous voulons déployer avec nos containers. Nous
-devons donc récupérer les sources.  
-Pour cela récupérer le script [getwp.sh](https://raw.githubusercontent.com/hlepesant/tppolytech/master/getwp.sh).  
-
-```shell
-wget https://raw.githubusercontent.com/hlepesant/tppolytech/master/getwp.sh
-chmod +x getwp.sh
-./getwp.sh
-```
+### le script getwp.sh
 
 Le script télécharge la dernière version de Wordpress francisée,
 décompresse l'archive dans le répertoire "wordpress",
 créer quelques répertoires pour le bon fonctionnement de l'application,
 et prépare le fichier de configuration de wordpress (wordpress/wp-config.php).  
 Nous utiliserons plus tard ce répertoire comme volume partagé avec Docker.  
+
+```shell
+chmod +x getwp.sh
+./getwp.sh
+```
+
+### nginx
+
+Contient une configuration de Nginx.  
+L'objectif n'étant pas d'apprendre à configure ce serveur web,
+vous utiliserez un volume Docker pour monter le répertoire 
+`nginx/config/conf.d` dans le répertoire `/etc/nginx/conf.d`
+d'un container Nginx.
+
+### phpfpm
+
+Le service PHP (son container) sera buildé.  
+Modifier le `Dockerfile` fourni pour builder votre image PHP.
 
 
 ## Créer le fichier docker-compose.yml
@@ -357,7 +367,7 @@ d'un volume Docker.
 <details><summary>solution Dockerfile php</summary>
 <p>
 
-```
+```docker
 FROM debian:bullseye-slim
 
 ENV DEBIAN_FRONTEND noninteractive
