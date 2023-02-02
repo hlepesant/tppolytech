@@ -34,8 +34,11 @@ require_once( ABSPATH . 'wp-settings.php');
 EOF
 
 chmod 0644 wordpress/wp-config.php
-mkdir wordpress/wp-content/{plugins,themes,upgrade,uploads}
-sudo chown -R 33:33 wordpress/wp-content
+mkdir -p -m 0777 wordpress/wp-content/plugins
+mkdir -p -m 0777 wordpress/wp-content/themes
+mkdir -p -m 0777 wordpress/wp-content/upgrade
+mkdir -p -m 0777 wordpress/wp-content/uploads
+sudo chown -R 101:101 wordpress/wp-content
 
 mv wordpress html
 
