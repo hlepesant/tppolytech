@@ -493,7 +493,7 @@ docker compose ps
 docker composer logs
 ```
 
-Qu'observer vous ?
+Qu'observez-vous ?
 
 ## Check
 
