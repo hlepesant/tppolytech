@@ -309,7 +309,6 @@ l'image [debian:bullseye-slim](https://hub.docker.com/_/debian)
 Toujours dans le répertoire "atelier", créer un sous-répertoire "php".  
 
 ```shell
-mkdir phpfpm
 vi phpfpm/Dockerfile
 ```
 
@@ -367,7 +366,7 @@ d'un volume Docker.
 <details><summary>solution Dockerfile php</summary>
 <p>
 
-```docker
+```
 FROM debian:bullseye-slim
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -467,11 +466,7 @@ Le but de l'atelier n'étant pas d'apprendre à configurer Nginx. Une version es
 proposé dans le répertoire "nginx/conf.d/" (cf commande ci-dessous). Ce répertoire sera le deuxième
 volume à monter dans le container.
 
-Pour créer ce fichier de config "default.conf" :
-```shell
-mkdir -p nginx/conf.d
-wget https://raw.githubusercontent.com/hlepesant/tppolytech/master/nginx/conf.d/default.conf -O nginx/conf.d/default.conf
-```
+Nous allons utiliser le fichier de configuration "default.conf" du répertoire "nginx/conf.d/" :
 
 <details><summary>solution service web</summary>
 <p>
