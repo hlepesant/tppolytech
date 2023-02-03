@@ -33,7 +33,10 @@ require_once( ABSPATH . 'wp-settings.php');
 EOF
 
 rm -f html/wp-config-sample.php
-mkdir -p html/wp-content/{plugins,themes,upgrade,uploads}
+mkdir -p html/wp-content/plugins
+mkdir -p html/wp-content/themes
+mkdir -p html/wp-content/upgrade
+mkdir -p html/wp-content/uploads
 find html -type d -exec chmod 775 '{}' \;
 find html -type f -exec chmod 664 '{}' \;
 chmod 0644 html/wp-config.php
