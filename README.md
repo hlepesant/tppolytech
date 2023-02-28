@@ -306,7 +306,7 @@ Il existe des images [Docker pour PHP](https://hub.docker.com/_/php), cependant
 nous allons construire notre propre image avec un Dockerfile, en se basant sur
 l'image [debian:bullseye-slim](https://hub.docker.com/_/debian)
 
-Toujours dans le répertoire "atelier", créer un sous-répertoire "php".  
+Toujours dans le répertoire "atelier", utiliser le sous-répertoire "phpfpm".  
 
 ```shell
 vi phpfpm/Dockerfile
@@ -362,6 +362,14 @@ A noter que le port 9000 sera exposé, et que le service PHP et Nginx doivent
 partager les sources de Wordpress selon le même PATH. Cela se fera sous la forme
 d'un volume Docker.
 
+_N.B:_
+Il est aussi possible de copier les fichiers présents dans phpfpm/config/ au bon  
+endroit et ne pas faire de sed en pagaille.  
+```
+ADD ./config/php.ini /etc/php/7.4/fpm/php.ini
+ADD ./config/php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf
+ADD ./config/pool.d/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+```
 
 <details><summary>solution Dockerfile php</summary>
 <p>
