@@ -28,10 +28,10 @@ ADD ./config/php.ini /etc/php/8.2/fpm/php.ini
 ADD ./config/php-fpm.conf /etc/php/8.2/fpm/php-fpm.conf
 ADD ./config/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 
-RUN mkdir /var/run/php
+RUN mkdir -p /var/run/php
 
 VOLUME /usr/share/nginx/html
 
 EXPOSE 9000
 
-CMD ["/usr/sbin/php-fpm7.4", "--nodaemonize"]
+CMD ["/usr/sbin/php-fpm8.2", "--nodaemonize"]
