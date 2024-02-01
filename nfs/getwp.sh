@@ -2,7 +2,7 @@
 
 cd /usr/share/nginx/
 
-wget -q -O wordpress.tar.gz https://wordpress.org/wordpress-6.1.1.tar.gz
+wget -q -O wordpress.tar.gz https://wordpress.org/wordpress-6.4.3.tar.gz
 tar xfz wordpress.tar.gz -C /usr/share/nginx/
 
 mv wordpress html

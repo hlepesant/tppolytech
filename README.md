@@ -5,8 +5,8 @@
 ## Rappels
 
 Les prérequis pour faire fonctionner l'application web [Wordpress](https://wordpress.org/) sont les suivantes :
- - Un serveur Web (Aapche2, Nginx)
- - PHP (7.x)
+ - Un serveur Web (Apache2, Nginx)
+ - PHP (8.x)
  - Un serveur de base de données (MySQL)
 
 ## Fonctionnement
@@ -58,15 +58,15 @@ Cette fois-ci nous allons créer notre image Docker avec un Dockerfile.
 En se basant sur une [image Debian officielle](https://hub.docker.com/_/debian) créer une image Docker permettant de lancer le service PHP-FPM.  
 Avec notre Dockerfile nous installerons des paquets PHP de Debian.  
 Les paquets sont les suivants :
- - php7.4-fpm
- - php7.4-mysql
- - php7.4-gd
- - php7.4-imagick
- - php7.4-intl
- - php7.4-mbstring
- - php7.4-xml
- - php7.4-curl
- - php7.4-apcu
+ - php8.2-fpm
+ - php8.2-mysql
+ - php8.2-gd
+ - php8.2-imagick
+ - php8.2-intl
+ - php8.2-mbstring
+ - php8.2-xml
+ - php8.2-curl
+ - php8.2-apcu
 Le container sera "linké" avec le container MySQL.
 
 
