@@ -4,7 +4,7 @@
 
 L'application web [Wordpress](https://wordpress.org/) nécessite :
  - Un serveur Web (Apache2, Nginx)
- - PHP (7.x)
+ - PHP (8.x)
  - Un serveur de base de données (MySQL)
 
 ## Objectif
@@ -61,14 +61,10 @@ docker run hello-world
 ```
 
 :warning:
-Cette installation de *docker-compose* se fait sous la forme d'une extension (plugins) de Docker.  
+Cette installation de *docker compose* se fait sous la forme d'une extension (plugins) de Docker.  
 Cela se traduit par une utilisation de la commande :
 ```
 docker compose <cmd>
-```
-Et non plus :
-```
-docker-compose  <cmd>
 ```
 
 Profitez-en pour install git et [jq](https://stedolan.github.io/jq/).  
