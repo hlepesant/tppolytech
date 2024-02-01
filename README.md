@@ -5,7 +5,7 @@
 ## Rappels
 
 Les prérequis pour faire fonctionner l'application web [Wordpress](https://wordpress.org/) sont les suivantes :
- - Un serveur Web (Aapche2, Nginx)
+ - Un serveur Web (Apache2, Nginx)
  - PHP (7.x)
  - Un serveur de base de données (MySQL)
 
