@@ -58,15 +58,15 @@ Cette fois-ci nous allons créer notre image Docker avec un Dockerfile.
 En se basant sur une [image Debian officielle](https://hub.docker.com/_/debian) créer une image Docker permettant de lancer le service PHP-FPM.  
 Avec notre Dockerfile nous installerons des paquets PHP de Debian.  
 Les paquets sont les suivants :
- - php7.3-fpm
- - php7.3-mysql
- - php7.3-gd
- - php7.3-imagick
- - php7.3-intl
- - php7.3-mbstring
- - php7.3-xml
- - php7.3-curl
- - php7.3-apcu
+ - php8.2-fpm
+ - php8.2-mysql
+ - php8.2-gd
+ - php8.2-imagick
+ - php8.2-intl
+ - php8.2-mbstring
+ - php8.2-xml
+ - php8.2-curl
+ - php8.2-apcu
 Le container sera "linké" avec le container MySQL.
 
 
