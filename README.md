@@ -315,8 +315,8 @@ pourrait être fait par le script shell suivant :
 export DEBIAN_FRONTEND="noninteractive"
 apt-get update
 apt-get install apt-transport-https lsb-release ca-certificates gnupg2 procps \
-  php7.4-common php7.4-cli php7.4-fpm php7.4-mysql php7.4-apcu php7.4-gd \
-  php7.4-imagick php7.4-curl php7.4-intl php-redis
+  php8.2-common php8.2-cli php8.2-fpm php8.2-mysql php8.2-apcu php8.2-gd \
+  php8.2-imagick php8.2-curl php8.2-intl php-redis
 apt-get clean
 apt-get autoclean
 mkdir /var/run/php
@@ -326,31 +326,31 @@ Il faudra aussi modifier quelques fichiers.
 Cependant comme vous ne pouvez pas utiliser un éditeur de texte lors du build
 d'une image
 
-_/etc/php/7.4/fpm/php.ini_
+_/etc/php/8.2/fpm/php.ini_
 
 * Pour augmenter la verbosité de PHP-FPM :
 ```shell
-sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/7.4/fpm/php.ini
+sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/8.2/fpm/php.ini
 ```
 
-_/etc/php/7.4/fpm/php-fpm.conf_
+_/etc/php/8.2/fpm/php-fpm.conf_
 
 * Faire en sorte que PHP-FPM, ne soit pas lancer en arrière plan.
 ```shell
-sed -i 's/\;daemonize.*/daemonize = no/' /etc/php/7.4/fpm/php-fpm.conf
+sed -i 's/\;daemonize.*/daemonize = no/' /etc/php/8.2/fpm/php-fpm.conf
 ```
 * Rediriger les logs vers la sortie standard :
 ```shell
-sed -i 's/error_log = .*/error_log = \/proc\/self\/fd\/2/' /etc/php/7.4/fpm/php-fpm.conf
+sed -i 's/error_log = .*/error_log = \/proc\/self\/fd\/2/' /etc/php/8.2/fpm/php-fpm.conf
 ```
 
-_/etc/php/7.4/fpm/pool.d/www.conf_
+_/etc/php/8.2/fpm/pool.d/www.conf_
 
 * Configuration d'un "pool" de PHP-FPM :
 
 ```shell
-sed -i 's/\;clear_env = .*/clear_env = no/' /etc/php/7.4/fpm/pool.d/www.conf
-sed -i 's/^listen = .*/listen = 0.0.0.0:9000/' /etc/php/7.4/fpm/pool.d/www.conf
+sed -i 's/\;clear_env = .*/clear_env = no/' /etc/php/8.2/fpm/pool.d/www.conf
+sed -i 's/^listen = .*/listen = 0.0.0.0:9000/' /etc/php/8.2/fpm/pool.d/www.conf
 ```
 
 Je vous invite à le traduire en Dockerfile les indications ci-dessus.  
@@ -362,9 +362,9 @@ _N.B:_
 Il est aussi possible de copier les fichiers présents dans phpfpm/config/ au bon  
 endroit et ne pas faire de sed en pagaille.  
 ```
-ADD ./config/php.ini /etc/php/7.4/fpm/php.ini
-ADD ./config/php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf
-ADD ./config/pool.d/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+ADD ./config/php.ini /etc/php/8.2/fpm/php.ini
+ADD ./config/php-fpm.conf /etc/php/8.2/fpm/php-fpm.conf
+ADD ./config/pool.d/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 ```
 
 <details><summary>solution Dockerfile php</summary>
@@ -381,24 +381,24 @@ RUN apt-get update \
         ca-certificates \
         gnupg2 \
         procps \
-        php7.4-common \
-        php7.4-cli \
-        php7.4-fpm \
-        php7.4-mysql \
-        php7.4-apcu \
-        php7.4-gd \
-        php7.4-imagick \
-        php7.4-curl \
-        php7.4-intl \
+        php8.2-common \
+        php8.2-cli \
+        php8.2-fpm \
+        php8.2-mysql \
+        php8.2-apcu \
+        php8.2-gd \
+        php8.2-imagick \
+        php8.2-curl \
+        php8.2-intl \
         php-redis \
         net-tools \
         default-mysql-client \
     && apt-get clean \
     && apt-get autoclean
 
-RUN sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/7.4/fpm/php.ini
-RUN sed -i 's/\;daemonize.*/daemonize = no/' /etc/php/7.4/fpm/php-fpm.conf
-RUN sed -i 's/error_log = .*/error_log = \/proc\/self\/fd\/2/' /etc/php/7.4/fpm/php-fpm.conf
+RUN sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/8.2/fpm/php.ini
+RUN sed -i 's/\;daemonize.*/daemonize = no/' /etc/php/8.2/fpm/php-fpm.conf
+RUN sed -i 's/error_log = .*/error_log = \/proc\/self\/fd\/2/' /etc/php/8.2/fpm/php-fpm.conf
 
 RUN mkdir /var/run/php
 
@@ -406,7 +406,7 @@ VOLUME /usr/share/nginx/html
 
 EXPOSE 9000
 
-CMD ["/usr/sbin/php-fpm7.4", "--nodaemonize"]
+CMD ["/usr/sbin/php-fpm8.2", "--nodaemonize"]
 ```
 </p>
 </details>

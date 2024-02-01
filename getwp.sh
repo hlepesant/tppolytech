@@ -1,6 +1,6 @@
 #!/bin/bash
 
-curl -sSL https://wordpress.org/wordpress-6.1.1.tar.gz -o wordpress.tar.gz
+curl -sSL https://wordpress.org/wordpress-6.4.3.tar.gz -o wordpress.tar.gz
 tar xfz wordpress.tar.gz
 
 cat <<'EOF' >> wordpress/wp-config.php
