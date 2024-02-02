@@ -300,7 +300,7 @@ sont très souvent utilisées pour passer des options aux images Docker.
 
 Il existe des images [Docker pour PHP](https://hub.docker.com/_/php), cependant
 nous allons construire notre propre image avec un Dockerfile, en se basant sur
-l'image [debian:bullseye-slim](https://hub.docker.com/_/debian)
+l'image [debian:bookworm-slim](https://hub.docker.com/_/debian)
 
 Toujours dans le répertoire "atelier", utiliser le sous-répertoire "phpfpm".  
 
@@ -316,7 +316,7 @@ export DEBIAN_FRONTEND="noninteractive"
 apt-get update
 apt-get install apt-transport-https lsb-release ca-certificates gnupg2 procps \
   php8.2-common php8.2-cli php8.2-fpm php8.2-mysql php8.2-apcu php8.2-gd \
-  php8.2-imagick php8.2-curl php8.2-intl php-redis
+  php8.2-imagick php8.2-curl php8.2-intl php8.2-redis
 apt-get clean
 apt-get autoclean
 mkdir /var/run/php
@@ -371,7 +371,7 @@ ADD ./config/pool.d/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 <p>
 
 ```
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -390,7 +390,7 @@ RUN apt-get update \
         php8.2-imagick \
         php8.2-curl \
         php8.2-intl \
-        php-redis \
+        php8.2-redis \
         net-tools \
         default-mysql-client \
     && apt-get clean \
