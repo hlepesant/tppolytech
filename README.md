@@ -171,7 +171,7 @@ volumes:
 
 Lancer les commandes :
 ```shell
-docker composer config
+docker compose config
 docker compose up -d
 ```
 
