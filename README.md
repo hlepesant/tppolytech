@@ -319,7 +319,7 @@ apt-get install apt-transport-https lsb-release ca-certificates gnupg2 procps \
   php8.2-imagick php8.2-curl php8.2-intl php8.2-redis
 apt-get clean
 apt-get autoclean
-mkdir /var/run/php
+mkdir -p /var/run/php
 ```
 
 Il faudra aussi modifier quelques fichiers.  
@@ -400,7 +400,7 @@ RUN sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/8.2/fpm/ph
 RUN sed -i 's/\;daemonize.*/daemonize = no/' /etc/php/8.2/fpm/php-fpm.conf
 RUN sed -i 's/error_log = .*/error_log = \/proc\/self\/fd\/2/' /etc/php/8.2/fpm/php-fpm.conf
 
-RUN mkdir /var/run/php
+RUN mkdir -p /var/run/php
 
 VOLUME /usr/share/nginx/html
 
